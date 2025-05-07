@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>AR Menu</title>
+    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.0/aframe/build/aframe-ar.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs>
+      <!-- One marker to cycle models -->
+      <a-marker type="pattern" url="markers/your-marker.patt" id="dish-marker">
+        <a-entity 
+          id="dish-model"
+          gltf-model="models/durum.glb"
+          scale="0.5 0.5 0.5"
+          position="0 0 0">
+        </a-entity>
+      </a-marker>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <!-- Dish name label -->
+    <div class="dish-label" id="dish-name">Durum</div>
+
+    <!-- Social Buttons -->
+    <div class="social-buttons">
+      <a href="https://wa.me/1234567890" target="_blank">
+        <img src="assets/whatsapp.png" alt="WhatsApp" class="icon-btn">
+      </a>
+      <a href="https://instagram.com/yourprofile" target="_blank">
+        <img src="assets/instagram.png" alt="Instagram" class="icon-btn">
+      </a>
+    </div>
+
+    <!-- Tap-to-switch logic -->
+    <script>
+      const models = [
+        { file: "models/durum.glb", name: "Durum" },
+        { file: "models/burger.glb", name: "Burger" },
+        { file: "models/bravas.glb", name: "Bravas" },
+        { file: "models/pizza.glb", name: "Pizza" },
+        { file: "models/cake.glb", name: "Cake" }
+      ];
+      let currentIndex = 0;
+
+      const modelEl = document.querySelector('#dish-model');
+      const nameEl = document.querySelector('#dish-name');
+
+      document.querySelector('#dish-marker').addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % models.length;
+        modelEl.setAttribute('gltf-model', models[currentIndex].file);
+        nameEl.textContent = models[currentIndex].name;
+      });
+    </script>
+  </body>
+</html>
