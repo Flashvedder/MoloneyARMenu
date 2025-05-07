@@ -1,80 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AR Menu</title>
+<!doctype html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+        <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+        <script>
+            // JavaScript to switch models based on button clicks
+            function switchModel(modelId) {
+                const models = ['durum', 'bravas', 'pizza', 'cake', 'burger'];
+                models.forEach((model) => {
+                    const element = document.getElementById(model);
+                    if (element) {
+                        element.setAttribute('visible', model === modelId);
+                    }
+                });
+            }
+        </script>
+    </head>
 
-    <!-- AR.js & A-Frame libraries -->
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+    <body style="margin: 0; overflow: hidden;">
+        <a-scene
+            vr-mode-ui="enabled: false;"
+            loading-screen="enabled: false;"
+            renderer="logarithmicDepthBuffer: true;"
+            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+            id="scene"
+            embedded
+            gesture-detector
+        >
+            <a-assets>
+                <!-- Loading your GLB files -->
+                <a-asset-item id="durum-model" src="assets/durum.glb"></a-asset-item>
+                <a-asset-item id="bravas-model" src="assets/bravas.glb"></a-asset-item>
+                <a-asset-item id="pizza-model" src="assets/pizza.glb"></a-asset-item>
+                <a-asset-item id="cake-model" src="assets/cake.glb"></a-asset-item>
+                <a-asset-item id="burger-model" src="assets/burger.glb"></a-asset-item> <!-- Added Burger -->
+            </a-assets>
 
-    <!-- Your CSS -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
+            <!-- Marker with AR -->
+            <a-marker id="animated-marker" type="pattern" preset="custom" url="assets/marker.patt" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
+                <!-- Models -->
+                <a-entity id="durum" gltf-model="#durum-model" scale="0.5 0.5 0.5" position="0 0 0" visible="true" class="clickable" gesture-handler></a-entity>
+                <a-entity id="bravas" gltf-model="#bravas-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler></a-entity>
+                <a-entity id="pizza" gltf-model="#pizza-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler></a-entity>
+                <a-entity id="cake" gltf-model="#cake-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler></a-entity>
+                <a-entity id="burger" gltf-model="#burger-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler></a-entity> <!-- Added Burger -->
+            </a-marker>
 
-  <body style="margin: 0; overflow: hidden">
-    <a-scene
-      embedded
-      arjs
-      vr-mode-ui="enabled: false"
-      renderer="logarithmicDepthBuffer: true"
-      style="width: 100%; height: 100%"
-    >
-      <!-- Marker for AR tracking (use the generated .patt file here) -->
-      <a-marker type="pattern" url="markers/marker.patt" id="dish-marker">
-        <!-- 3D models for dishes -->
-        <a-entity
-          id="dish1"
-          gltf-model="models/dish1.glb"
-          scale="0.5 0.5 0.5"
-          position="0 0 0"
-        ></a-entity>
-        <a-entity
-          id="dish2"
-          gltf-model="models/dish2.glb"
-          scale="0.5 0.5 0.5"
-          position="0 0 0"
-        ></a-entity>
-        <a-entity
-          id="dish3"
-          gltf-model="models/dish3.glb"
-          scale="0.5 0.5 0.5"
-          position="0 0 0"
-        ></a-entity>
-        <a-entity
-          id="dish4"
-          gltf-model="models/dish4.glb"
-          scale="0.5 0.5 0.5"
-          position="0 0 0"
-        ></a-entity>
-        <a-entity
-          id="dish5"
-          gltf-model="models/dish5.glb"
-          scale="0.5 0.5 0.5"
-          position="0 0 0"
-        ></a-entity>
+            <a-entity camera></a-entity>
+        </a-scene>
 
-        <!-- Optional buttons (like WhatsApp or Instagram) -->
-        <a-entity
-          id="whatsapp-button"
-          geometry="primitive: plane; width: 2; height: 1"
-          material="src: url(assets/whatsapp-button.png)"
-          position="0 1.5 0"
-          link="href: https://wa.me/1234567890"
-        ></a-entity>
+        <!-- Button for model switching -->
+        <div style="position: absolute; top: 20px; left: 20px; z-index: 999;">
+            <button onclick="switchModel('durum')">Durum</button>
+            <button onclick="switchModel('bravas')">Bravas</button>
+            <button onclick="switchModel('pizza')">Pizza</button>
+            <button onclick="switchModel('cake')">Cake</button>
+            <button onclick="switchModel('burger')">Burger</button> <!-- Added Burger Button -->
+        </div>
 
-        <a-entity
-          id="instagram-button"
-          geometry="primitive: plane; width: 2; height: 1"
-          material="src: url(assets/instagram-button.png)"
-          position="0 0.5 0"
-          link="href: https://www.instagram.com/yourusername"
-        ></a-entity>
-      </a-marker>
-
-      <!-- Camera setup -->
-      <a-entity camera></a-entity>
-    </a-scene>
-  </body>
+        <!-- Social Media Buttons -->
+        <div style="position: absolute; bottom: 20px; left: 20px; z-index: 999;">
+            <a href="https://wa.me/your-phone-number" target="_blank">
+                <img src="assets/whatsapp.png" alt="WhatsApp" style="width: 50px; height: 50px; margin-right: 10px;">
+            </a>
+            <a href="https://www.instagram.com/your-username" target="_blank">
+                <img src="assets/instagram.png" alt="Instagram" style="width: 50px; height: 50px;">
+            </a>
+        </div>
+    </body>
 </html>
