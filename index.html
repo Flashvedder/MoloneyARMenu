@@ -25,7 +25,7 @@
   </head>
 
   <body style="margin: 0; overflow: hidden;">
-    <!-- Button Controls -->
+    <!-- Buttons -->
     <div id="buttons">
       <img src="assets/whatsapp.png" id="btn-whatsapp" alt="WhatsApp Button" />
       <img src="assets/instagram.png" id="btn-instagram" alt="Instagram Button" />
@@ -39,7 +39,6 @@
       embedded
       gesture-detector
     >
-      <!-- Preload Assets -->
       <a-assets>
         <a-asset-item id="durum" src="models/durum.glb"></a-asset-item>
         <a-asset-item id="burger" src="models/burger.glb"></a-asset-item>
@@ -72,14 +71,24 @@
 
     <script>
       const modelEntity = document.querySelector('#model');
+      const modelIds = ['#durum', '#burger', '#bravas', '#pizza', '#cake'];
+      let currentModelIndex = 0;
 
-      // Button event handlers
+      // Cycle models on tap
+      modelEntity.addEventListener('click', () => {
+        currentModelIndex = (currentModelIndex + 1) % modelIds.length;
+        modelEntity.setAttribute('gltf-model', modelIds[currentModelIndex]);
+      });
+
+      // Button direct model loading
       document.querySelector('#btn-whatsapp').addEventListener('click', () => {
-        modelEntity.setAttribute('gltf-model', '#burger'); // WhatsApp → burger
+        modelEntity.setAttribute('gltf-model', '#burger');
+        currentModelIndex = modelIds.indexOf('#burger');
       });
 
       document.querySelector('#btn-instagram').addEventListener('click', () => {
-        modelEntity.setAttribute('gltf-model', '#pizza'); // Instagram → pizza
+        modelEntity.setAttribute('gltf-model', '#pizza');
+        currentModelIndex = modelIds.indexOf('#pizza');
       });
     </script>
   </body>
