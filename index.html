@@ -27,8 +27,8 @@
   <body style="margin: 0; overflow: hidden;">
     <!-- Buttons -->
     <div id="buttons">
-      <img src="assets/whatsapp.png" id="btn-whatsapp" alt="WhatsApp Button" />
-      <img src="assets/instagram.png" id="btn-instagram" alt="Instagram Button" />
+      <img src="assets/whatsapp.png" id="btn-whatsapp" alt="WhatsApp" />
+      <img src="assets/instagram.png" id="btn-instagram" alt="Instagram" />
     </div>
 
     <a-scene
@@ -80,15 +80,13 @@
         modelEntity.setAttribute('gltf-model', modelIds[currentModelIndex]);
       });
 
-      // Button direct model loading
+      // External links for buttons
       document.querySelector('#btn-whatsapp').addEventListener('click', () => {
-        modelEntity.setAttribute('gltf-model', '#burger');
-        currentModelIndex = modelIds.indexOf('#burger');
+        window.open('https://wa.link/wj3128', '_blank');
       });
 
       document.querySelector('#btn-instagram').addEventListener('click', () => {
-        modelEntity.setAttribute('gltf-model', '#pizza');
-        currentModelIndex = modelIds.indexOf('#pizza');
+        window.open('https://www.instagram.com/moloney_animation?igsh=YWg0djl2eXl5ZHpi&utm_source=qr', '_blank');
       });
     </script>
   </body>
