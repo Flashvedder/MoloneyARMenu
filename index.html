@@ -1,99 +1,76 @@
 <!doctype html>
 <html>
-  <head>
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
-    <style>
-      #buttons {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 20px;
-        z-index: 10;
-        pointer-events: auto; /* Make sure buttons are clickable */
-      }
-      #buttons img {
-        width: 60px;
-        height: 60px;
-        cursor: pointer;
-      }
-    </style>
-  </head>
+    <head>
+        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+        <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    </head>
 
-  <body style="margin: 0; overflow: hidden;">
-    <!-- Buttons -->
-    <div id="buttons">
-      <img src="assets/whatsapp.png" id="btn-whatsapp" alt="WhatsApp" />
-      <img src="assets/instagram.png" id="btn-instagram" alt="Instagram" />
-    </div>
+    <body style="margin: 0; overflow: hidden;">
+        <a-scene
+            vr-mode-ui="enabled: false;"
+            loading-screen="enabled: false;"
+            renderer="logarithmicDepthBuffer: true;"
+            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+            id="scene"
+            embedded
+            gesture-detector
+        >
+            <a-assets>
+                <!-- Define the GLB models as assets -->
+                <a-asset-item id="durum" src="assets/durum.glb"></a-asset-item>
+                <a-asset-item id="burger" src="assets/burger.glb"></a-asset-item>
+                <a-asset-item id="bravas" src="assets/bravas.glb"></a-asset-item>
+                <a-asset-item id="pizza" src="assets/pizza.glb"></a-asset-item>
+                <a-asset-item id="cake" src="assets/cake.glb"></a-asset-item>
+            </a-assets>
 
-    <a-scene
-      vr-mode-ui="enabled: false;"
-      loading-screen="enabled: false;"
-      renderer="logarithmicDepthBuffer: true;"
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-      embedded
-      gesture-detector
-    >
-      <a-assets>
-        <a-asset-item id="durum" src="models/durum.glb"></a-asset-item>
-        <a-asset-item id="burger" src="models/burger.glb"></a-asset-item>
-        <a-asset-item id="bravas" src="models/bravas.glb"></a-asset-item>
-        <a-asset-item id="pizza" src="models/pizza.glb"></a-asset-item>
-        <a-asset-item id="cake" src="models/cake.glb"></a-asset-item>
-      </a-assets>
+            <a-marker
+                id="animated-marker"
+                type="pattern"
+                preset="custom"
+                url="assets/marker.patt"
+                raycaster="objects: .clickable"
+                emitevents="true"
+                cursor="fuse: false; rayOrigin: mouse;"
+                id="markerA"
+            >
+                <a-entity
+                    id="model"
+                    scale="1.982963883593107 1.982963883593107 1.982963883593107"
+                    animation-mixer="loop: repeat"
+                    gltf-model="#durum"  <!-- Default model -->
+                    class="clickable"
+                    gesture-handler
+                ></a-entity>
+            </a-marker>
 
-      <!-- AR Marker -->
-      <a-marker
-        id="animated-marker"
-        type="pattern"
-        preset="custom"
-        url="markers/marker.patt"
-        raycaster="objects: .clickable"
-        emitevents="true"
-        cursor="fuse: false; rayOrigin: mouse;"  <!-- Ensure cursor is linked to raycasting -->
-      >
-        <a-entity
-          id="model"
-          gltf-model="#durum"
-          scale="1.98 1.98 1.98"
-          animation-mixer="loop: repeat"
-          class="clickable"
-          gesture-handler
-        ></a-entity>
-      </a-marker>
+            <a-entity camera></a-entity>
+        </a-scene>
 
-      <a-entity camera cursor="fuse: false; rayOrigin: mouse;" raycaster="objects: .clickable"></a-entity>
-    </a-scene>
+        <script>
+            // Array of GLB models
+            const models = [
+                '#durum', '#burger', '#bravas', '#pizza', '#cake'
+            ];
+            let currentModelIndex = 0;
 
-    <script>
-      const modelEntity = document.querySelector('#model');
-      const modelIds = ['#durum', '#burger', '#bravas', '#pizza', '#cake'];
-      let currentModelIndex = 0;
+            // Fetch the model entity
+            const modelEntity = document.querySelector('#model');
 
-      // Log output for debugging
-      modelEntity.addEventListener('click', () => {
-        console.log('Model clicked, switching to:', modelIds[currentModelIndex]);
-        currentModelIndex = (currentModelIndex + 1) % modelIds.length;
-        modelEntity.setAttribute('gltf-model', null); // Force refresh
-        setTimeout(() => {
-          modelEntity.setAttribute('gltf-model', modelIds[currentModelIndex]); // Switch model
-        }, 50);
-      });
+            // Function to change the model when clicked
+            function changeModel() {
+                // Set the model to the next one in the array
+                modelEntity.setAttribute('gltf-model', models[currentModelIndex]);
 
-      // External links for buttons
-      document.querySelector('#btn-whatsapp').addEventListener('click', () => {
-        window.open('https://wa.link/wj3128', '_blank');
-      });
+                // Update the index to cycle through the models
+                currentModelIndex = (currentModelIndex + 1) % models.length;
+            }
 
-      document.querySelector('#btn-instagram').addEventListener('click', () => {
-        window.open('https://www.instagram.com/moloney_animation?igsh=YWg0djl2eXl5ZHpi&utm_source=qr', '_blank');
-      });
-    </script>
-  </body>
+            // Add event listener for tap (click) gesture
+            modelEntity.addEventListener('click', changeModel);
+        </script>
+    </body>
 </html>
