@@ -25,7 +25,7 @@
   </head>
 
   <body style="margin: 0; overflow: hidden;">
-    <!-- Buttons -->
+    <!-- Buttons (only for links) -->
     <div id="buttons">
       <img src="assets/whatsapp.png" id="btn-whatsapp" alt="WhatsApp" />
       <img src="assets/instagram.png" id="btn-instagram" alt="Instagram" />
@@ -48,7 +48,6 @@
       </a-assets>
 
       <a-marker
-        id="animated-marker"
         type="pattern"
         preset="custom"
         url="markers/marker.patt"
@@ -74,13 +73,13 @@
       const modelIds = ['#durum', '#burger', '#bravas', '#pizza', '#cake'];
       let currentModelIndex = 0;
 
-      // Cycle models on tap
+      // Tap model to cycle
       modelEntity.addEventListener('click', () => {
         currentModelIndex = (currentModelIndex + 1) % modelIds.length;
         modelEntity.setAttribute('gltf-model', modelIds[currentModelIndex]);
       });
 
-      // External links for buttons
+      // Buttons open external links
       document.querySelector('#btn-whatsapp').addEventListener('click', () => {
         window.open('https://wa.link/wj3128', '_blank');
       });
