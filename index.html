@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Moloney AR Menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- A-Frame & AR.js -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .instruction-text {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 1.2em;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 10px 20px;
+        border-radius: 10px;
+        z-index: 1;
+      }
+
+      .button-container {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        display: flex;
+        gap: 20px;
+      }
+
+      .button-container img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .fade-out {
+        opacity: 0;
+        transition: opacity 1s ease-out;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="instructionText" class="instruction-text">
+      Focus camera on image to see plates and tap to switch dish
+    </div>
+
+    <div class="button-container">
+      <a href="https://wa.link/wj3128" target="_blank">
+        <img
+          src="https://cdn.glitch.global/7a7a8bc5-6d0f-4c96-8aa1-66654fd52660/%E2%80%94Pngtree%E2%80%94whatsapp%20icon%20social%20media_9015284.png?v=1746179230195"
+          alt="WhatsApp"
+        />
+      </a>
+      <a
+        href="https://www.instagram.com/moloney_animation?igsh=YWg0djl2eXl5ZHpi&utm_source=qr"
+        target="_blank"
+      >
+        <img
+          src="https://cdn.glitch.global/7a7a8bc5-6d0f-4c96-8aa1-66654fd52660/Instagram_icon.png?v=1746180702509"
+          alt="Instagram"
+        />
+      </a>
+    </div>
+
+    <a-scene
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      raycaster="objects: .clickable"
+      cursor="rayOrigin: mouse"
+    >
+      <a-assets>
+        <img
+          id="envMap"
+          src="https://cdn.glitch.global/4efb4c61-c782-4a6f-8018-2763620e48a7/studio_small_08_4k.jpg?v=1746524007824"
+          crossorigin="anonymous"
+        />
+      </a-assets>
+
+      <!-- Hidden sky for reflections -->
+      <a-light type="ambient" intensity="5.5" color="#ffffff"></a-light>
+
+      <a-marker
+        type="pattern"
+        url="https://cdn.glitch.global/4efb4c61-c782-4a6f-8018-2763620e48a7/marker.patt?v=1746531340275"
+        tap-switch
+      >
+        <a-gltf-model
+          id="model1"
+          class="clickable"
+          src="https://cdn.glitch.global/4efb4c61-c782-4a6f-8018-2763620e48a7/Kebabs_Durum25.glb?v=1746532588518"
+          scale="5.5 5.5 5.5"
+          position="0 0 0"
+          animation-mixer
+          visible="true"
+          material="envMap: #envMap; metalness: 0.3; roughness: 0.5;"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 15000"
+        ></a-gltf-model>
+
+        <a-entity
+          light="type: spot; intensity: 2; color: #ffffff; target: #model1; position: 0 5 0; angle: 45; distance: 10"
+        ></a-entity>
+
+        <a-gltf-model
+          id="model2"
+          class="clickable"
+          src="https://cdn.glitch.global/4efb4c61-c782-4a6f-8018-2763620e48a7/Taps23Baravas2025.glb?v=1746533860379"
+          scale="2.5 2.5 2.5"
+          position="0 0 0"
+          animation-mixer
+          visible="false"
+          material="envMap: #envMap; metalness: 0.3; roughness: 0.5;"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 15000"
+        ></a-gltf-model>
+
+        <a-entity
+          light="type: spot; intensity: 2; color: #ffffff; target: #model2; position: 0 5 0; angle: 45; distance: 10"
+        ></a-entity>
+
+        <a-gltf-model
+          id="model3"
+          class="clickable"
+          src="https://cdn.glitch.global/7a7a8bc5-6d0f-4c96-8aa1-66654fd52660/tapas23_burger.glb?v=1746183889129"
+          scale="2.5 2.5 2.5"
+          position="0 0 0"
+          animation-mixer
+          visible="false"
+          material="envMap: #envMap; metalness: 0.3; roughness: 0.5;"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 15000"
+        ></a-gltf-model>
+
+        <a-entity
+          light="type: spot; intensity: 2; color: #ffffff; target: #model3; position: 0 5 0; angle: 45; distance: 10"
+        ></a-entity>
+
+        <a-gltf-model
+          id="model4"
+          class="clickable"
+          src="https://cdn.glitch.global/4efb4c61-c782-4a6f-8018-2763620e48a7/Pizza_pepperoni.glb?v=1746532995629"
+          scale="4 4 4"
+          position="0 0 0"
+          animation-mixer
+          visible="false"
+          material="envMap: #envMap; metalness: 0.3; roughness: 0.5;"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 15000"
+        ></a-gltf-model>
+
+        <a-entity
+          light="type: spot; intensity: 1; color: #ffffff; target: #model4; position: 0 5 0; angle: 45; distance: 10"
+        ></a-entity>
+
+        <a-gltf-model
+          id="model5"
+          class="clickable"
+          src="https://cdn.glitch.global/4efb4c61-c782-4a6f-8018-2763620e48a7/Cakebrighter25.glb?v=1746535332320"
+          scale="5 5 5"
+          position="0 0 0"
+          animation-mixer
+          visible="false"
+          material="envMap: #envMap; metalness: 0.3; roughness: 0.5; emission: 2.5;"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 15000"
+        ></a-gltf-model>
+
+        <a-entity
+          light="type: spot; intensity: 2; color: #ffffff; target: #model5; position: 0 5 0; angle: 45; distance: 10"
+        ></a-entity>
+      </a-marker>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+      AFRAME.registerComponent("tap-switch", {
+        init: function () {
+          const models = [
+            document.getElementById("model1"),
+            document.getElementById("model2"),
+            document.getElementById("model3"),
+            document.getElementById("model4"),
+            document.getElementById("model5"),
+          ];
+          let currentIndex = 0;
+          models.forEach((model, i) => {
+            model.setAttribute("visible", i === 0);
+          });
+
+          this.el.sceneEl.addEventListener("click", () => {
+            const intersected =
+              this.el.sceneEl.components.raycaster.intersectedEls[0];
+            if (intersected && intersected.classList.contains("clickable")) {
+              models[currentIndex].setAttribute("visible", false);
+              currentIndex = (currentIndex + 1) % models.length;
+              models[currentIndex].setAttribute("visible", true);
+            }
+          });
+        },
+      });
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const instruction = document.getElementById("instructionText");
+        const scene = document.querySelector("a-scene");
+        scene.addEventListener("markerFound", () => {
+          instruction.classList.add("fade-out");
+          setTimeout(() => {
+            instruction.style.display = "none";
+          }, 1000);
+        });
+      });
+    </script>
+  </body>
+</html>
