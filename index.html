@@ -1,91 +1,34 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
-    <style>
-      #buttons {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 20px;
-        z-index: 10;
-      }
-      #buttons img {
-        width: 60px;
-        height: 60px;
-        cursor: pointer;
-      }
-    </style>
+    <meta charset="utf-8">
+    <title>A-Frame Model Switcher</title>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
   </head>
-
-  <body style="margin: 0; overflow: hidden;">
-    <!-- Buttons (only for links) -->
-    <div id="buttons">
-      <img src="assets/whatsapp.png" id="btn-whatsapp" alt="WhatsApp" />
-      <img src="assets/instagram.png" id="btn-instagram" alt="Instagram" />
-    </div>
-
-    <a-scene
-      vr-mode-ui="enabled: false;"
-      loading-screen="enabled: false;"
-      renderer="logarithmicDepthBuffer: true;"
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-      embedded
-      gesture-detector
-    >
+  <body>
+    <a-scene>
       <a-assets>
-        <a-asset-item id="durum" src="models/durum.glb"></a-asset-item>
-        <a-asset-item id="burger" src="models/burger.glb"></a-asset-item>
-        <a-asset-item id="bravas" src="models/bravas.glb"></a-asset-item>
-        <a-asset-item id="pizza" src="models/pizza.glb"></a-asset-item>
-        <a-asset-item id="cake" src="models/cake.glb"></a-asset-item>
+        <!-- Replace these URLs with your own GLB model paths -->
+        <a-asset-item id="model1" src="https://cdn.aframe.io/test-models/models/box/box.gltf"></a-asset-item>
+        <a-asset-item id="model2" src="https://cdn.aframe.io/test-models/models/torus/torus.gltf"></a-asset-item>
+        <a-asset-item id="model3" src="https://cdn.aframe.io/test-models/models/sphere/sphere.gltf"></a-asset-item>
       </a-assets>
 
-      <a-marker
-        type="pattern"
-        preset="custom"
-        url="markers/marker.patt"
-        raycaster="objects: .clickable"
-        emitevents="true"
-        cursor="fuse: false; rayOrigin: mouse;"
-      >
-        <a-entity
-          id="model"
-          gltf-model="#durum"
-          scale="1.98 1.98 1.98"
-          animation-mixer="loop: repeat"
-          class="clickable"
-          gesture-handler
-        ></a-entity>
-      </a-marker>
+      <a-entity id="model" gltf-model="#model1" position="0 1.5 -3" scale="0.5 0.5 0.5" class="clickable"></a-entity>
 
-      <a-entity camera></a-entity>
+      <a-camera position="0 1.6 0">
+        <a-cursor></a-cursor>
+      </a-camera>
     </a-scene>
 
     <script>
       const modelEntity = document.querySelector('#model');
-      const modelIds = ['#durum', '#burger', '#bravas', '#pizza', '#cake'];
-      let currentModelIndex = 0;
+      const models = ['#model1', '#model2', '#model3'];
+      let currentIndex = 0;
 
-      // Tap model to cycle
       modelEntity.addEventListener('click', () => {
-        currentModelIndex = (currentModelIndex + 1) % modelIds.length;
-        modelEntity.setAttribute('gltf-model', modelIds[currentModelIndex]);
-      });
-
-      // Buttons open external links
-      document.querySelector('#btn-whatsapp').addEventListener('click', () => {
-        window.open('https://wa.link/wj3128', '_blank');
-      });
-
-      document.querySelector('#btn-instagram').addEventListener('click', () => {
-        window.open('https://www.instagram.com/moloney_animation?igsh=YWg0djl2eXl5ZHpi&utm_source=qr', '_blank');
+        currentIndex = (currentIndex + 1) % models.length;
+        modelEntity.setAttribute('gltf-model', models[currentIndex]);
       });
     </script>
   </body>
