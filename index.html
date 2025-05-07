@@ -7,14 +7,13 @@
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
         <script>
-            // JavaScript to switch models based on button clicks
-            function switchModel(modelId) {
+            // JavaScript to switch models when a dish is tapped
+            function switchModel(clickedModel) {
                 const models = ['durum', 'bravas', 'pizza', 'cake', 'burger'];
                 models.forEach((model) => {
                     const element = document.getElementById(model);
-                    if (element) {
-                        element.setAttribute('visible', model === modelId);
-                    }
+                    // If the model clicked matches the model in question, make it visible
+                    element.setAttribute('visible', model === clickedModel);
                 });
             }
         </script>
@@ -41,32 +40,23 @@
 
             <!-- Marker with AR -->
             <a-marker id="animated-marker" type="pattern" preset="custom" url="assets/marker.patt" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-                <!-- Models -->
-                <a-entity id="durum" gltf-model="#durum-model" scale="0.5 0.5 0.5" position="0 0 0" visible="true" class="clickable" gesture-handler></a-entity>
-                <a-entity id="bravas" gltf-model="#bravas-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler></a-entity>
-                <a-entity id="pizza" gltf-model="#pizza-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler></a-entity>
-                <a-entity id="cake" gltf-model="#cake-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler></a-entity>
-                <a-entity id="burger" gltf-model="#burger-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler></a-entity> <!-- Added Burger -->
+                <!-- Models with gesture handler for switching -->
+                <a-entity id="durum" gltf-model="#durum-model" scale="0.5 0.5 0.5" position="0 0 0" visible="true" class="clickable" gesture-handler="tap: switchModel('durum')"></a-entity>
+                <a-entity id="bravas" gltf-model="#bravas-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler="tap: switchModel('bravas')"></a-entity>
+                <a-entity id="pizza" gltf-model="#pizza-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler="tap: switchModel('pizza')"></a-entity>
+                <a-entity id="cake" gltf-model="#cake-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler="tap: switchModel('cake')"></a-entity>
+                <a-entity id="burger" gltf-model="#burger-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler="tap: switchModel('burger')"></a-entity> <!-- Added Burger -->
             </a-marker>
 
             <a-entity camera></a-entity>
         </a-scene>
 
-        <!-- Button for model switching -->
-        <div style="position: absolute; top: 20px; left: 20px; z-index: 999;">
-            <button onclick="switchModel('durum')">Durum</button>
-            <button onclick="switchModel('bravas')">Bravas</button>
-            <button onclick="switchModel('pizza')">Pizza</button>
-            <button onclick="switchModel('cake')">Cake</button>
-            <button onclick="switchModel('burger')">Burger</button> <!-- Added Burger Button -->
-        </div>
-
         <!-- Social Media Buttons -->
         <div style="position: absolute; bottom: 20px; left: 20px; z-index: 999;">
-            <a href="https://wa.me/your-phone-number" target="_blank">
+            <a href="https://wa.link/wj3128" target="_blank">
                 <img src="assets/whatsapp.png" alt="WhatsApp" style="width: 50px; height: 50px; margin-right: 10px;">
             </a>
-            <a href="https://www.instagram.com/your-username" target="_blank">
+            <a href="https://www.instagram.com/moloney_animation?igsh=YWg0djl2eXl5ZHpi&utm_source=qr" target="_blank">
                 <img src="assets/instagram.png" alt="Instagram" style="width: 50px; height: 50px;">
             </a>
         </div>
