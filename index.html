@@ -1,23 +1,55 @@
-<!doctype html>
-<html>
-    <head>
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-        <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
-        <script>
-            // JavaScript to switch models when a dish is tapped
-            function switchModel(clickedModel) {
-                const models = ['durum', 'bravas', 'pizza', 'cake', 'burger'];
-                models.forEach((model) => {
-                    const element = document.getElementById(model);
-                    // If the model clicked matches the model in question, make it visible
-                    element.setAttribute('visible', model === clickedModel);
-                });
-            }
-        </script>
-    </head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Moloney AR Menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- A-Frame & AR.js -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .instruction-text {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 1.2em;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 10px 20px;
+        border-radius: 10px;
+        z-index: 1;
+      }
+
+      .button-container {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        display: flex;
+        gap: 20px;
+      }
+
+      .button-container img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .fade-out {
+        opacity: 0;
+        transition: opacity 1s ease-out;
+      }
+    </style>
+  </head>
+  </head>
 
     <body style="margin: 0; overflow: hidden;">
         <a-scene
