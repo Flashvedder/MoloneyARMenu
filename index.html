@@ -1,96 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Moloney AR Menu</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- A-Frame & AR.js -->
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
-
+    <title>AR.js Multiple GLB Models</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/AR.js/aframe/build/aframe-ar.js"></script>
     <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
-
-      .instruction-text {
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        color: white;
-        font-size: 1.2em;
-        background: rgba(0, 0, 0, 0.6);
-        padding: 10px 20px;
-        border-radius: 10px;
-        z-index: 1;
-      }
-
-      .button-container {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2;
-        display: flex;
-        gap: 20px;
-      }
-
-      .button-container img {
-        width: 40px;
-        height: 40px;
-      }
-
-      .fade-out {
-        opacity: 0;
-        transition: opacity 1s ease-out;
-      }
+      body { margin: 0; overflow: hidden; }
+      canvas { display: block; }
     </style>
   </head>
-  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs>
+      <!-- Define marker -->
+      <a-marker id="marker" type="pattern" url="path/to/your-marker.patt">
+        <!-- Define initial model (Durum) -->
+        <a-entity id="model" gltf-model="url(durum.glb)" scale="0.5 0.5 0.5" position="0 0 0" animation-mixer></a-entity>
+      </a-marker>
 
-    <body style="margin: 0; overflow: hidden;">
-        <a-scene
-            vr-mode-ui="enabled: false;"
-            loading-screen="enabled: false;"
-            renderer="logarithmicDepthBuffer: true;"
-            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-            id="scene"
-            embedded
-            gesture-detector
-        >
-            <a-assets>
-                <!-- Loading your GLB files -->
-                <a-asset-item id="durum-model" src="assets/durum.glb"></a-asset-item>
-                <a-asset-item id="bravas-model" src="assets/bravas.glb"></a-asset-item>
-                <a-asset-item id="pizza-model" src="assets/pizza.glb"></a-asset-item>
-                <a-asset-item id="cake-model" src="assets/cake.glb"></a-asset-item>
-                <a-asset-item id="burger-model" src="assets/burger.glb"></a-asset-item> <!-- Added Burger -->
-            </a-assets>
+      <!-- Camera setup for AR.js -->
+      <a-entity camera></a-entity>
+    </a-scene>
 
-            <!-- Marker with AR -->
-            <a-marker id="animated-marker" type="pattern" preset="custom" url="assets/marker.patt" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-                <!-- Models with gesture handler for switching -->
-                <a-entity id="durum" gltf-model="#durum-model" scale="0.5 0.5 0.5" position="0 0 0" visible="true" class="clickable" gesture-handler="tap: switchModel('durum')"></a-entity>
-                <a-entity id="bravas" gltf-model="#bravas-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler="tap: switchModel('bravas')"></a-entity>
-                <a-entity id="pizza" gltf-model="#pizza-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler="tap: switchModel('pizza')"></a-entity>
-                <a-entity id="cake" gltf-model="#cake-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler="tap: switchModel('cake')"></a-entity>
-                <a-entity id="burger" gltf-model="#burger-model" scale="0.5 0.5 0.5" position="0 0 0" visible="false" class="clickable" gesture-handler="tap: switchModel('burger')"></a-entity> <!-- Added Burger -->
-            </a-marker>
+    <script>
+      // Array of GLB files
+      const models = [
+        'durum.glb',
+        'burger.glb',
+        'bravas.glb',
+        'pizza.glb',
+        'cake.glb'
+      ];
+      let currentModelIndex = 0;
 
-            <a-entity camera></a-entity>
-        </a-scene>
+      // Fetch the model entity and marker
+      const modelEntity = document.querySelector('#model');
+      const marker = document.querySelector('#marker');
 
-        <!-- Social Media Buttons -->
-        <div style="position: absolute; bottom: 20px; left: 20px; z-index: 999;">
-            <a href="https://wa.link/wj3128" target="_blank">
-                <img src="assets/whatsapp.png" alt="WhatsApp" style="width: 50px; height: 50px; margin-right: 10px;">
-            </a>
-            <a href="https://www.instagram.com/moloney_animation?igsh=YWg0djl2eXl5ZHpi&utm_source=qr" target="_blank">
-                <img src="assets/instagram.png" alt="Instagram" style="width: 50px; height: 50px;">
-            </a>
-        </div>
-    </body>
+      // Function to change the model
+      function changeModel() {
+        // Update the GLB model URL
+        modelEntity.setAttribute('gltf-model', `url(${models[currentModelIndex]})`);
+
+        // Update the animation
+        modelEntity.setAttribute('animation-mixer', '');
+
+        // Increment to the next model, looping back to 0 after the last model
+        currentModelIndex = (currentModelIndex + 1) % models.length;
+      }
+
+      // Add event listener for tap (click)
+      marker.addEventListener('click', changeModel);
+    </script>
+  </body>
 </html>
