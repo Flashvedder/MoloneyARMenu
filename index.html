@@ -1,59 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AR Menu</title>
-    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.0/aframe/build/aframe-ar.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+
+    <!-- AR.js & A-Frame library -->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs>
-      <!-- One marker to cycle models -->
-      <a-marker type="pattern" url="markers/your-marker.patt" id="dish-marker">
-        <a-entity 
-          id="dish-model"
-          gltf-model="models/durum.glb"
+
+  <body style="margin: 0; overflow: hidden">
+    <a-scene
+      embedded
+      arjs
+      vr-mode-ui="enabled: false"
+      renderer="logarithmicDepthBuffer: true"
+      style="width: 100%; height: 100%"
+    >
+      <!-- Marker for AR tracking (use your custom .patt file here) -->
+      <a-marker type="pattern" url="markers/pattern-marker.patt" id="dish-marker">
+        <!-- 3D Models for dishes -->
+        <a-entity
+          id="dish1"
+          gltf-model="models/dish1.glb"
           scale="0.5 0.5 0.5"
-          position="0 0 0">
-        </a-entity>
+          position="0 0 0"
+        ></a-entity>
+        <a-entity
+          id="dish2"
+          gltf-model="models/dish2.glb"
+          scale="0.5 0.5 0.5"
+          position="0 0 0"
+        ></a-entity>
+        <a-entity
+          id="dish3"
+          gltf-model="models/dish3.glb"
+          scale="0.5 0.5 0.5"
+          position="0 0 0"
+        ></a-entity>
+        <a-entity
+          id="dish4"
+          gltf-model="models/dish4.glb"
+          scale="0.5 0.5 0.5"
+          position="0 0 0"
+        ></a-entity>
+        <a-entity
+          id="dish5"
+          gltf-model="models/dish5.glb"
+          scale="0.5 0.5 0.5"
+          position="0 0 0"
+        ></a-entity>
+
+        <!-- Social media buttons (for WhatsApp, Instagram) -->
+        <a-entity
+          id="whatsapp-button"
+          geometry="primitive: plane; width: 2; height: 1"
+          material="src: url(assets/whatsapp-button.png)"
+          position="0 1.5 0"
+          link="href: https://wa.me/1234567890"
+        ></a-entity>
+
+        <a-entity
+          id="instagram-button"
+          geometry="primitive: plane; width: 2; height: 1"
+          material="src: url(assets/instagram-button.png)"
+          position="0 0.5 0"
+          link="href: https://www.instagram.com/yourusername"
+        ></a-entity>
       </a-marker>
 
+      <!-- Camera setup -->
       <a-entity camera></a-entity>
     </a-scene>
-
-    <!-- Dish name label -->
-    <div class="dish-label" id="dish-name">Durum</div>
-
-    <!-- Social Buttons -->
-    <div class="social-buttons">
-      <a href="https://wa.me/1234567890" target="_blank">
-        <img src="assets/whatsapp.png" alt="WhatsApp" class="icon-btn">
-      </a>
-      <a href="https://instagram.com/yourprofile" target="_blank">
-        <img src="assets/instagram.png" alt="Instagram" class="icon-btn">
-      </a>
-    </div>
-
-    <!-- Tap-to-switch logic -->
-    <script>
-      const models = [
-        { file: "models/durum.glb", name: "Durum" },
-        { file: "models/burger.glb", name: "Burger" },
-        { file: "models/bravas.glb", name: "Bravas" },
-        { file: "models/pizza.glb", name: "Pizza" },
-        { file: "models/cake.glb", name: "Cake" }
-      ];
-      let currentIndex = 0;
-
-      const modelEl = document.querySelector('#dish-model');
-      const nameEl = document.querySelector('#dish-name');
-
-      document.querySelector('#dish-marker').addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % models.length;
-        modelEl.setAttribute('gltf-model', models[currentIndex].file);
-        nameEl.textContent = models[currentIndex].name;
-      });
-    </script>
   </body>
 </html>
